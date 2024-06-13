@@ -1,0 +1,94 @@
+# ASP.NET Core
+
+Framework for making web apps, APIs, real-time apps using SignalR.
+Offers infrastructure for handling HTTP requests, routing, middleware, etc.
+
+# Aspose
+
+Nothing to do with dotnet. Provides various dotnet APIs for the creation/manipulation/conversion of various file formats.
+Word, Excel, PowerPoint, PDF, HTML, images, email formats, etc.
+
+# Model-View-Controller (MVC) pattern
+
+Design pattern used to separate app into 3 interconnected components: Model-View-Controller
+
+How they work together:
+The user interacts with the View (e.g. by clicking a button)
+The View sends the user's action to the Controller.
+The Controller processes the input and interacts with the Model to update/retrieve data.
+The Controller then selects a View to display the updated data to the user.
+
+Model [data]
+	Represents the data and business logic of the app.
+	It has methods to change/retrieve data.
+	E.g. in a library management system, a Book model would contain properties like Title, Author, ISBN, and methods to save/retrieve book information from a database.
+
+View [user interface]
+	Represents the presentation aspect of the app.
+	Displays the data to the user and sends user commands to the controller.
+	Renders the user interface / Display data from the model / Capture user input.
+	E.g. in the same library management system, a BookDetails view would display the book's details to the user in a webpage.
+
+Controller []
+	Intermediate between Model and View.
+	Listens to the input from the View, processes it using the Model, returns the output display to the View.
+	Handles user input / Interacts with the model to retrieve/update data / Select the view to render that data.
+	E.g. in the same library management system, a BooksController would handle requests to view a list of books, view details of specific book, or add new book.
+
+	Handles incoming HTTP requests, processes them, and returns response.
+	Intermediate between the View (user interface) and Model (data).
+
+# Model example
+
+namespace MyMvcApp.Models
+{
+	public class Book
+	{
+		public int Id ;
+		public string Title ;
+		public string Author ;
+		public string ISBN ;
+	}
+}
+
+# View example
+
+<!-- Views/Books/Details.cshtml -->
+@model MyMvcApp.Models.Book
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Details</title>
+</head>
+<body>
+    <h1>Book Details</h1>
+    <p>Title: @Model.Title</p>
+    <p>Author: @Model.Author</p>
+    <p>ISBN: @Model.ISBN</p>
+</body>
+</html>
+
+# Controller example
+
+namespace MyMvcApp.Controllers
+{
+	public class BooksController : Controller
+	{
+		private static List<Book> Books = new List<Book>
+		{
+			new Book { Id = 1, Title = "1984", Author = "George Orwell", ISBN = "123456789" },
+			new Book { Id = 2, Title = "To Kill a Mockingbird", Author = "Harper Lee", ISBN = "123456789" },
+		};
+
+		public IActionResult Details(int id)
+		{
+			var book = Books.FirstOrDefault(b => b.Id == id); // ???
+			if (book == null)
+			{
+				return (NotFound());
+			}
+			return (View(book));
+		}
+	}
+}
